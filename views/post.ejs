@@ -36,7 +36,15 @@
       </div>
     </article>
 
-    <hr />
+    <div class="updatePost">
+
+      <a href="/post/edit/<%=post._id%>" class="buttonUpdated" href="">Update</a>
+     
+      <a href="/post/<%= post._id %>?_method=DELETE" class="buttonDeleted" href="">Delete</a>
+    </div>
+
+
+  
 
     <!-- Footer -->
     <%- include ("partials/_footer") -%>

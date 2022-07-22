@@ -1,8 +1,10 @@
 const express = require('express');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 
-const Post = require('./models/Post');
+const postContorller = require('./controllers/post');
+const pageContorller = require('./controllers/page');
 
 const app = express();
 
@@ -15,28 +17,25 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(
+  methodOverride('_method', {
+    methods: ['POST', 'GET'],
+  })
+);
 
 //ROUTES
-app.get('/', async (req, res) => {
-  const posts = await Post.find();
-  res.render('index', { posts });
-});
+app.get('/', postContorller.getPosts);
+app.put('/post/edit/:id', postContorller.updatePost);
+app.get('/posts/:id', postContorller.getPost);
 
-app.get('/about', (req, res) => {
-  res.render('about');
-});
-app.get('/add_post', (req, res) => {
-  res.render('add_post');
-});
-app.get('/posts/:id', async (req, res) => {
-  const post = await Post.findById(req.params.id);
-  res.render('post', { post });
-});
+app.post('/posts', postContorller.createPost);
 
-app.post('/posts', async (req, res) => {
-  await Post.create(req.body);
-  res.redirect('/');
-});
+app.delete('/post/:id', postContorller.deletePost);
+
+app.get('/post/edit/:id', pageContorller.getEditPage);
+
+app.get('/about', pageContorller.getAboutPage);
+app.get('/add_post', pageContorller.getAddPage);
 
 const PORT = 8080;
 app.listen(PORT, () => {
