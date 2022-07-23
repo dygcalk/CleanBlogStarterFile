@@ -8,7 +8,14 @@ const pageContorller = require('./controllers/page');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost/cleanblog-test-db');
+const connect = async () => {
+  try {
+    mongoose.connect('mongodb://localhost/cleanblog-test-db');
+    console.log('DB Connect');
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 //TEMPLATE ENGINE
 app.set('view engine', 'ejs');
@@ -37,7 +44,8 @@ app.get('/post/edit/:id', pageContorller.getEditPage);
 app.get('/about', pageContorller.getAboutPage);
 app.get('/add_post', pageContorller.getAddPage);
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log('Server is up');
+  connect();
 });
