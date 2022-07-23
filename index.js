@@ -10,7 +10,9 @@ const app = express();
 
 const connect = async () => {
   try {
-    mongoose.connect('mongodb://localhost/cleanblog-test-db');
+    mongoose.connect(
+      'mongodb+srv://cleanBlog:cleanBlog123@cleanblog.hlphopi.mongodb.net/?retryWrites=true&w=majority'
+    );
     console.log('DB Connect');
   } catch (error) {
     console.log(error);
